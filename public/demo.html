@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+/------------------------------------------------------------------------------\
+| Copyright (C) 2012-2013 Leap Motion, Inc. All rights reserved.               |
+| Leap Motion proprietary and confidential. Not for distribution.              |
+| Use subject to the terms of the Leap Motion SDK Agreement available at       |
+| https://developer.leapmotion.com/sdk_agreement, or another agreement         |
+| between Leap Motion and you, your company or other organization.             |
+\------------------------------------------------------------------------------/
+-->
+
+<!--
+
+See additional libraries, guides, and examples at:
+
+ - https://developer.leapmotion.com/downloads/javascript
+ - https://developer.leapmotion.com/getting-started/javascript
+ - https://developer.leapmotion.com/gallery/tags/javascript
+
+-->
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Leap Motion First Demp</title>
+    <script src="bower_components/leapjs/leap-0.6.4.js"></script>
+</head>
+<body>
+<canvas id="displayArea" width="1000" height="1000" style="background:#dddddd;"></canvas>
+<script>
+    var canvasElement = document.getElementById("displayArea");
+    var displayArea = canvasElement.getContext("2d");
+
+    var palm = new Image();
+    palm.src = 'images/palm.png';
+
+    var controller = new Leap.Controller();
+    controller.on("frame", function(frame){
+        if(frame.pointables.length > 0)
+        {
+            canvasElement.width = canvasElement.width; //clear
+
+            //Get a pointable and normalize the tip position
+            var pointable = frame.pointables[0];
+            var interactionBox = frame.interactionBox;
+            var normalizedPosition = interactionBox.normalizePoint(pointable.tipPosition, true);
+
+            // Convert the normalized coordinates to span the canvas
+            var canvasX = canvasElement.width * normalizedPosition[0];
+            var canvasY = canvasElement.height * (1 - normalizedPosition[1]);
+            //we can ignore z for a 2D context
+
+//            displayArea.strokeText("(" + canvasX.toFixed(1) + ", " + canvasY.toFixed(1) + ")", canvasX, canvasY);
+            displayArea.drawImage(palm, canvasX, canvasY);
+        }
+    });
+    controller.connect();
+</script>
+</body>
+</html>

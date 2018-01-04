@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Leap motion choose panel</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/morris.js/morris.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/raphael/raphael.js"></script>
+    <script src="bower_components/morris.js/morris.js"></script>
+    <script src="bower_components/leapjs/leap-0.6.4.js"></script>
+    <style type="text/css">
+        .shadow{
+            box-shadow:-2px 0px 5px 1px red,0px -2px 5px 1px red,2px 0px 5px 1px red,0px 2px 5px 1px red; /*左边阴影*/
+        }
+
+        @keyframes shadowPulse {
+            0% {
+                box-shadow: 0px 0px 0px red;
+            }
+
+            100% {
+                box-shadow: -4px 0px 7px 3px red,0px -4px 7px 3px red,4px 0px 7px 3px red,0px 4px 7px 3px red;
+            }
+        }
+
+        .shadow-pulse {
+            -webkit-animation-name: shadowPulse;
+            -moz-animation-name: shadowPulse;
+            -o-animation-name: shadowPulse;
+            animation-name: shadowPulse;
+
+            animation-duration: 1s;
+            animation-iteration-count: 1;
+            animation-direction: normal;
+            animation-fill-mode: forwards;
+        }
+    </style>
+</head>
+<body style="background-color: #ebebeb">
+
+<div class="container-fluid" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary" data-leap-index="0">
+                <div class="panel-heading">
+                    柱状图
+                </div>
+                <div class="panel-body">
+                    <div id="bar"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-info" data-leap-index="1">
+                <div class="panel-heading">
+                    饼图
+                </div>
+                <div class="panel-body">
+                    <div id="donut"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-success" data-leap-index="2">
+                <div class="panel-heading">
+                   时间线
+                </div>
+                <div class="panel-body">
+                    <div id="timeEvent">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-warning" data-leap-index="3">
+                <div class="panel-heading">
+                    标题四
+                </div>
+                <div class="panel-body">
+                    <div id="area">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        'use strict';
+
+        Morris.Bar({
+            element: 'bar',
+            data: [
+                {x: '2011 Q1', y: 0},
+                {x: '2011 Q2', y: 1},
+                {x: '2011 Q3', y: 2},
+                {x: '2011 Q4', y: 3},
+                {x: '2012 Q1', y: 4},
+                {x: '2012 Q2', y: 5},
+                {x: '2012 Q3', y: 6},
+                {x: '2012 Q4', y: 7},
+                {x: '2013 Q1', y: 8}
+            ],
+            xkey: 'x',
+            ykeys: ['y'],
+            labels: ['Y'],
+            barColors: function (row, series, type) {
+                if (type === 'bar') {
+                    var red = Math.ceil(255 * row.y / this.ymax);
+                    return 'rgb(' + red + ',0,0)';
+                }
+                else {
+                    return '#000';
+                }
+            }
+        });
+
+        Morris.Donut({
+            element: 'donut',
+            data: [
+                {value: 70, label: 'foo'},
+                {value: 15, label: 'bar'},
+                {value: 10, label: 'baz'},
+                {value: 5, label: 'A really really long label'}
+            ],
+            backgroundColor: '#ccc',
+            labelColor: '#060',
+            colors: [
+                '#0BA462',
+                '#39B580',
+                '#67C69D',
+                '#95D7BB'
+            ],
+            formatter: function (x) {
+                return x + "%"
+            }
+        });
+
+        Morris.Line({
+            element: 'timeEvent',
+            data: [
+                {"period": "2011 W27", "licensed": 3407, "sorned": 660},
+                {"period": "2011 W26", "licensed": 3351, "sorned": 629},
+                {"period": "2011 W25", "licensed": 3269, "sorned": 618},
+                {"period": "2011 W24", "licensed": 3246, "sorned": 661},
+                {"period": "2011 W23", "licensed": 3257, "sorned": 667},
+                {"period": "2011 W22", "licensed": 3248, "sorned": 627},
+                {"period": "2011 W21", "licensed": 3171, "sorned": 660},
+                {"period": "2011 W20", "licensed": 3171, "sorned": 676},
+                {"period": "2011 W19", "licensed": 3201, "sorned": 656},
+                {"period": "2011 W18", "licensed": 3215, "sorned": 622},
+                {"period": "2011 W17", "licensed": 3148, "sorned": 632},
+                {"period": "2011 W16", "licensed": 3155, "sorned": 681},
+                {"period": "2011 W15", "licensed": 3190, "sorned": 667},
+                {"period": "2011 W14", "licensed": 3226, "sorned": 620},
+                {"period": "2011 W13", "licensed": 3245, "sorned": null},
+                {"period": "2011 W12", "licensed": 3289, "sorned": null},
+                {"period": "2011 W11", "licensed": 3263, "sorned": null},
+                {"period": "2011 W10", "licensed": 3189, "sorned": null},
+                {"period": "2011 W09", "licensed": 3079, "sorned": null},
+                {"period": "2011 W08", "licensed": 3085, "sorned": null},
+                {"period": "2011 W07", "licensed": 3055, "sorned": null},
+                {"period": "2011 W06", "licensed": 3063, "sorned": null},
+                {"period": "2011 W05", "licensed": 2943, "sorned": null},
+                {"period": "2011 W04", "licensed": 2806, "sorned": null},
+                {"period": "2011 W03", "licensed": 2674, "sorned": null},
+                {"period": "2011 W02", "licensed": 1702, "sorned": null},
+                {"period": "2011 W01", "licensed": 1732, "sorned": null}
+            ],
+            xkey: 'period',
+            ykeys: ['licensed', 'sorned'],
+            labels: ['Licensed', 'SORN'],
+            events: [
+                '2011-04',
+                '2011-08'
+            ]
+        });
+
+        Morris.Area({
+            element: 'area',
+            data: [
+                {x: '2013-03-30 22:00:00', y: 3, z: 3},
+                {x: '2013-03-31 00:00:00', y: 2, z: 0},
+                {x: '2013-03-31 02:00:00', y: 0, z: 2},
+                {x: '2013-03-31 04:00:00', y: 4, z: 4}
+            ],
+            xkey: 'x',
+            ykeys: ['y', 'z'],
+            labels: ['Y', 'Z']
+        });
+
+        var leapNavigation = {
+
+            data: [
+                $('[data-leap-index="0"]'),
+                $('[data-leap-index="1"]'),
+                $('[data-leap-index="2"]'),
+                $('[data-leap-index="3"]')
+            ],
+            currentCoordinate: 0,
+
+            currentElement: function () {
+                return this.data[this.currentCoordinate];
+            },
+
+            nextElement: function () {
+                if (this.currentCoordinate == this.data.length - 1) {
+                    this.currentCoordinate = 0;
+                } else {
+                    this.currentCoordinate++;
+                }
+                return this.data[this.currentCoordinate];
+            },
+
+            preElement: function () {
+                if (this.currentCoordinate == 0) {
+                    this.currentCoordinate = this.data.length - 1;
+                } else {
+                    this.currentCoordinate--;
+                }
+                return this.data[this.currentCoordinate];
+            },
+
+            unselectedElement: function () {
+                var result = new Array();
+
+                for (var i = 0; i < this.data.length; i++) {
+                    if (i != this.currentCoordinate) {
+                        result.push(this.data[i]);
+                    }
+                }
+                return result;
+            }
+
+        }
+
+//        leapNavigation.currentElement().css('box-shadow', '-2px 0px 5px 1px red,0px -2px 5px 1px red,2px 0px 5px 1px red,0px 2px 5px 1px red');
+        leapNavigation.currentElement().addClass('shadow-pulse');
+
+        var preTime = new Date().getTime();
+        var interval = 1000;
+        
+        function  isAction() {
+            if (new Date().getTime() - preTime > 1000) {
+                preTime = new Date().getTime();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        Leap.loop({enableGestures : true}, function (frame) {
+            if (frame.hands.length > 0) {
+                leapNavigation.currentElement().addClass('shadow-pulse');
+                if (frame.gestures.length > 0 && isAction()) {
+                    var gesture = frame.gestures[0];
+                    if (gesture.type == 'swipe') {
+                        leapNavigation.nextElement().addClass('shadow-pulse');
+                    } else {
+                        leapNavigation.preElement().addClass('shadow-pulse');
+                    }
+                    var unselectedElements = leapNavigation.unselectedElement();
+                    $.each(unselectedElements, function (i, data) {
+                        data.removeClass('shadow-pulse');
+                    });
+                }
+            } else {
+                $.each(leapNavigation.data, function (i,data) {
+                    data.removeClass('shadow-pulse');
+                });
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>

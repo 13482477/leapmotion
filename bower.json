@@ -1,0 +1,24 @@
+{
+  "name": "leapmotion",
+  "description": "",
+  "main": "",
+  "authors": [
+    "lizhiqiang"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "leapjs": "^0.6.4",
+    "sweetalert": "^2.0.7",
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7",
+    "morris.js": "morrisjs#^0.5.1"
+  }
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Leap motion 轮播图</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/leapjs/leap-0.6.4.js"></script>
+</head>
+<body style="text-align: center">
+
+<div id="myCarousel" class="carousel slide" style="width: 900px; margin: 200px auto;" >
+    <!-- 轮播（Carousel）指标 -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <!-- 轮播（Carousel）项目 -->
+    <div class="carousel-inner">
+        <div class="item active">
+            <img src="images/slide1.png" alt="First slide">
+        </div>
+        <div class="item">
+            <img src="images/slide2.png" alt="Second slide">
+        </div>
+        <div class="item">
+            <img src="images/slide3.png" alt="Third slide">
+        </div>
+    </div>
+    <!-- 轮播（Carousel）导航 -->
+    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        'use strict';
+
+        $('#myCarousel').carousel({
+            interval : false
+        });
+
+        Leap.loop({enableGestures : true}, function (frame) {
+            if (frame.gestures.length > 0) {
+                $('#myCarousel').carousel('next');
+            }
+        });
+
+
+    });
+
+</script>
+
+</body>
+</html>
