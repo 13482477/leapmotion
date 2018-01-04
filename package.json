@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "bowerInstall" : "bower install"
+    "bowerInstall": "bower install"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
